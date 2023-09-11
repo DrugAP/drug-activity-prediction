@@ -1,2 +1,2 @@
-# drug-toxicity-prediction
+# drug-activity-prediction
 测试
