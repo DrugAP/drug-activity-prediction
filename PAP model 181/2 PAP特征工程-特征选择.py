@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
-from sklearn.ensemble import RandomForestClassifier     # 随机森林(Random Forest) BaggingRegressor是随机森林专用
+from sklearn.ensemble import RandomForestClassifier    
 from sklearn.feature_selection import RFE
 
 # 特征选择：RFE
@@ -22,17 +22,17 @@ for i in range(60,121,10):
     for j in range(4, 21, 4):
         for k in range(5, 15, 1):
             for u in range(1, 5, 1):
-                RFC_ = RandomForestClassifier(n_estimators=i,max_depth=j,min_samples_leaf=u,random_state=0)  # 随机森林实例化
-                selector = RFE(RFC_, n_features_to_select=k,step=10).fit(X,y)  # RFE实例化
+                RFC_ = RandomForestClassifier(n_estimators=i,max_depth=j,min_samples_leaf=u,random_state=0) 
+                selector = RFE(RFC_, n_features_to_select=k,step=10).fit(X,y) 
 
-                selected_features_indices = selector.support_  # 返回所有的特征是否被选中的布尔矩阵
-                selected_feature_names = X.columns[selected_features_indices]  # 选中特征的列名
+                selected_features_indices = selector.support_ 
+                selected_feature_names = X.columns[selected_features_indices]  
 
                 print("Selected feature names: ", selected_feature_names)
                 print("n_estimators: {0} \n max_depth: {1} \n n_features_to_select: {2} \n min_samples_leaf: {3}".format(i, j, k, u))
 
-                #print(selector.support_.sum())    # support_:返回所有的特征是否被选中的布尔矩阵,求和后得到30个特征
-                #print(selector.ranking_)        # ranking_:返回特征的按数次迭代中综合重要性的排名 排第1的特征最重要
+                #print(selector.support_.sum())  
+                #print(selector.ranking_)      
 
                 # 4.转换数据
                 X_wrapper_features = selector.transform(X)
@@ -43,21 +43,19 @@ for i in range(60,121,10):
                 print(auc_scores)
                 scores_and_params.append((auc_scores, selected_feature_names, i, j, k, u))
 
-# 对得分进行排序并选择前十个得分
 scores_and_params_sorted = sorted(scores_and_params, key=lambda x: x[0], reverse=True)
 top_10_scores_and_params = scores_and_params_sorted[:10]
 
-# 打印前十个得分及其相应的参数组合
 for score, feature_names, n_estimators, max_depth, n_features_to_select, min_samples_leaf in top_10_scores_and_params:
     print(f"Score: {score}, Features: {list(feature_names)}, n_estimators: {n_estimators}, "
           f"max_depth: {max_depth}, n_features_to_select: {n_features_to_select}, min_samples_leaf: {min_samples_leaf}")
 
 '''
-RFC_ = RandomForestClassifier(n_estimators=90,max_depth=4 ,min_samples_leaf=4,random_state=0)  # 随机森林实例化
-selector = RFE(RFC_, n_features_to_select=11,step=10).fit(X,y)  # RFE实例化
+RFC_ = RandomForestClassifier(n_estimators=90,max_depth=4 ,min_samples_leaf=4,random_state=0) 
+selector = RFE(RFC_, n_features_to_select=11,step=10).fit(X,y) 
 
-selected_features_indices = selector.support_  # 返回所有的特征是否被选中的布尔矩阵
-selected_feature_names = X.columns[selected_features_indices]  # 选中特征的列名
+selected_features_indices = selector.support_ 
+selected_feature_names = X.columns[selected_features_indices]  
 
 print("Selected feature names: ", selected_feature_names)
 
@@ -77,7 +75,7 @@ selected_columns = ['qed', 'HeavyAtomMolWt', 'ExactMolWt', 'BCUT2D_LOGPLOW', 'Ch
 train_data = df[selected_columns]
 
 #将提取的数据保存到文件中
-train_data.to_csv('F:/111/10PX_train_11_descriptor_RFE622.csv')
+train_data.to_csv('F:/train_descriptor_RFE.csv')
 
 #---------test描述符提取------------------test描述符提取------------------------------------------------------------------------------
 
