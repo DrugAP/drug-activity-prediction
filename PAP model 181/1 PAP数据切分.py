@@ -1,9 +1,8 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-# 假设数据保存在一个名为'data.csv'的文件中
 # 读取数据
-df = pd.read_csv('F:/fluralaner 208descriptor 240409.csv', index_col=0) #index_col=0 保留行名和列名
+df = pd.read_csv('F:/fluralaner 208descriptor.csv', index_col=0) 
 
 # 使用train_test_split进行8:2的随机切分
 train_df, test_df = train_test_split(df, test_size=0.2, random_state=42)
